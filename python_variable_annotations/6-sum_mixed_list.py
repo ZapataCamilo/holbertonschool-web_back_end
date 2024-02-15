@@ -9,7 +9,7 @@ and returns their sum, which should be a float.
 from typing import List, Union
 
 
-def sum_mixed_list(mxd_lst: List[Union[float, int]]) -> float:
+def sum_mixed_list(mxd_lst: List[Union[int, float]]) -> float:
     """
     Returns the sum of all of the numbers in 'mxd_list',
     assuming that 'mxd_list' is a list
