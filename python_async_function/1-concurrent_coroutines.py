@@ -14,12 +14,12 @@ second = float
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def run(max: int, li: List) -> None:
+async def run(max_d: int, li: List) -> None:
     """
-    Runs 'wait_random(max_delay)', awaits its return value,
+    Runs 'wait_random(max_d)', awaits its return value,
     and appends its result to 'li'
     """
-    li.append(await wait_random(max))
+    li.append(await wait_random(max_d))
 
 
 async def wait_n(n: int, max_delay: int) -> List[second]:
