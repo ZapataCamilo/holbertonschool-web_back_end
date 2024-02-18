@@ -8,21 +8,21 @@ from base_caching import BaseCaching
 
 class LIFOCache(BaseCaching):
     """
-    This class keeps track of its instances' stored pairs
-    with a dictionary, called 'self.caching_data',
-    and keeps track of the most recently added keys
-    using 'self.keys_stack', which is a list with the
-    least recently added keys first, and the most recently
-    added keys last.
+    key:value pair caching system, with a maximum capacity
+    equal to 'BaseCaching.MAX_ITEMS'
     """
     def __init__(self):
-        """
-        Keeps track of the MRU keys,
-        so that the newest one can be removed from itself
-        and 'self.cache_data' when max capacity is reached.
-        """
         super().__init__()
+
         self.keys_stack = []
+        """
+        This class keeps track of its instances' stored pairs
+        with a dictionary, called 'self.caching_data',
+        and keeps track of the most recently added keys
+        using 'self.keys_stack', which is a list with the
+        least recently added keys first, and the most recently
+        added keys last.
+        """
 
     def get(self, key):
         """
@@ -31,6 +31,7 @@ class LIFOCache(BaseCaching):
         """
         if key is None or key not in self.cache_data:
             return None
+
         return self.cache_data[key]
 
     def put(self, key, item) -> None:
@@ -43,18 +44,22 @@ class LIFOCache(BaseCaching):
             return
 
         if key in self.cache_data:
+            # Mark this key as the most recently added key
             self.keys_stack.remove(key)
 
         elif len(self.cache_data) == BaseCaching.MAX_ITEMS:
+            MOST_RECENT_KEY = self.keys_stack.pop()
             """
             Key that was most recently added to
             'self.cache_data', through this method,
-            found in 'self.keys_stack[-1]'
+            found in 'self.keys_stack[-1]'.
             """
-            MOST_RECENT_KEY = self.keys_stack.pop()
             del self.cache_data[MOST_RECENT_KEY]
 
-            print({f'DISCARD: {MOST_RECENT_KEY}'})
+            print(f"DISCARD: {MOST_RECENT_KEY}")
 
         self.cache_data[key] = item
+        # add the key to 'keys_stack',
+        # with its position indicating that it's
+        # the most recently added key.
         self.keys_stack.append(key)
